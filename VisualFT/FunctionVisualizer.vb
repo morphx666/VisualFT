@@ -32,8 +32,6 @@ Public Class FunctionVisualizer
 
     Private Const ToRad As Single = Math.PI / 180
     Private Tau As Double = 2 * Math.PI
-    Private TwoTau As Double = 2 * Tau
-    Private FourTau As Double = 2 * TwoTau
 
     Private animCancelTask As CancellationTokenSource
     Private centersOfMass As New List(Of Tuple(Of Double, Double))
@@ -198,6 +196,8 @@ Public Class FunctionVisualizer
         Dim t As Double
         Dim secPerCycle As Double = 1 / mCyclesPerSecond
 
+        Dim graphLength As Double = 2 * Tau
+
         Using g As Graphics = Graphics.FromImage(mLinearPlot)
             g.SmoothingMode = Drawing2D.SmoothingMode.None
             g.PixelOffsetMode = Drawing2D.PixelOffsetMode.None
@@ -214,9 +214,9 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            p1 = New PointF(-w2, scale * mFunction((mSamplePosition + w2) / width * TwoTau))
+            p1 = New PointF(-w2, scale * mFunction((mSamplePosition + w2) / width * graphLength))
             For x As Double = -w2 To w2
-                t = (x + w2) / width * TwoTau
+                t = (x + w2) / width * graphLength
                 p2 = New PointF(x, scale * mFunction(t))
 
                 g.DrawLine(linearPlotPen, p1, p2)
@@ -246,6 +246,9 @@ Public Class FunctionVisualizer
         Dim sumX As Double = 0
         Dim sumY As Double = 0
 
+        Dim factor As Integer = 8
+        Dim sampleLength As Double = factor * Tau
+
         Using g As Graphics = Graphics.FromImage(mCircularPlot)
             g.SmoothingMode = Drawing2D.SmoothingMode.None
             g.PixelOffsetMode = Drawing2D.PixelOffsetMode.None
@@ -266,7 +269,7 @@ Public Class FunctionVisualizer
             '                scale * mFunction(0) * Math.Sin(0)) ' Math.Sin(0) = 0
             p1 = New PointF(scale * mFunction(0), 0)
 
-            For a = 0 To FourTau Step 1 / mResolution
+            For a = 0 To sampleLength Step 1 / mResolution
                 t = a * secPerCycle
 
                 p2 = New PointF(scale * mFunction(t) * Math.Cos(a),
@@ -279,13 +282,13 @@ Public Class FunctionVisualizer
                 sumY += p2.Y / scale
             Next
 
-            mCenterOfMass = Math.Sqrt(sumX ^ 2 + sumY ^ 2) / mResolution / 4
+            mCenterOfMass = Math.Sqrt(sumX ^ 2 + sumY ^ 2) / mResolution / factor
 
             Dim p As New Tuple(Of Double, Double)(mCyclesPerSecond, mCenterOfMass)
             If Not centersOfMass.Contains(p) Then centersOfMass.Add(p)
 
             ' Draw sample line
-            t = mSamplePosition / width * FourTau
+            t = mSamplePosition / width * sampleLength
             a = (t / secPerCycle)
             p1 = New PointF(0, 0)
             p2 = New PointF(scale * mFunction(t) * Math.Cos(a),
@@ -294,8 +297,8 @@ Public Class FunctionVisualizer
 
             ' Draw center of mass
             Using sb As New SolidBrush(fftPlotPen.Color)
-                g.FillEllipse(sb, CSng(sumX / 4),
-                                  CSng(sumY / 4), 8, 8)
+                g.FillEllipse(sb, CSng(sumX / factor),
+                                  CSng(sumY / factor), 8, 8)
             End Using
         End Using
     End Sub
