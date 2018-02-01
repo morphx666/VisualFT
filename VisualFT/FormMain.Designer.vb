@@ -34,7 +34,7 @@ Partial Class FormMain
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Name = "FormMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "VisualFFT"
+        Me.Text = "Visual Fourier Transform"
         Me.ResumeLayout(False)
 
     End Sub

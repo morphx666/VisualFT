@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8CE4EBC2-09BF-43D0-A092-1F190EFB5F90}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>VisualFFT.My.MyApplication</StartupObject>
-    <RootNamespace>VisualFFT</RootNamespace>
-    <AssemblyName>VisualFFT</AssemblyName>
+    <StartupObject>VisualFT.My.MyApplication</StartupObject>
+    <RootNamespace>VisualFT</RootNamespace>
+    <AssemblyName>VisualFT</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
@@ -21,7 +21,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>VisualFFT.xml</DocumentationFile>
+    <DocumentationFile>VisualFT.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -31,7 +31,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>VisualFFT.xml</DocumentationFile>
+    <DocumentationFile>VisualFT.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>

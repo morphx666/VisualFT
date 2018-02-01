@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("VisualFFT")>
+<Assembly: AssemblyTitle("VisualFT")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("VisualFFT")>
+<Assembly: AssemblyProduct("VisualFT")>
 <Assembly: AssemblyCopyright("Copyright ©  2018")>
 <Assembly: AssemblyTrademark("")>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("2018.2.1.375")>
-<Assembly: AssemblyFileVersion("2018.2.1.375")>
+<Assembly: AssemblyVersion("2018.2.1.378")>
+<Assembly: AssemblyFileVersion("2018.2.1.378")>
