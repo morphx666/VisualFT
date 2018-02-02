@@ -29,6 +29,7 @@ Partial Class FormMain
         'LabelFormula
         '
         Me.LabelFormula.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LabelFormula.AutoEllipsis = True
         Me.LabelFormula.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
         Me.LabelFormula.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
