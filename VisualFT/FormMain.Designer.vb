@@ -36,6 +36,7 @@ Partial Class FormMain
         Me.LabelFormula.ForeColor = System.Drawing.Color.CadetBlue
         Me.LabelFormula.Location = New System.Drawing.Point(505, 9)
         Me.LabelFormula.Name = "LabelFormula"
+        Me.LabelFormula.Padding = New System.Windows.Forms.Padding(0, 0, 0, 1)
         Me.LabelFormula.Size = New System.Drawing.Size(312, 22)
         Me.LabelFormula.TabIndex = 0
         Me.LabelFormula.Text = "Label1"

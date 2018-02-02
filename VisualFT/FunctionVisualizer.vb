@@ -6,10 +6,10 @@ Public Class FunctionVisualizer
     Public Structure GraphSettings
         Public ReadOnly Property Width As Integer
         Public ReadOnly Property Height As Integer
-        Public ReadOnly Property Scale As Integer
+        Public ReadOnly Property Scale As Single
         Public ReadOnly Property Color As Pen
 
-        Public Sub New(width As Integer, height As Integer, scale As Integer, color As Pen)
+        Public Sub New(width As Integer, height As Integer, scale As Single, color As Pen)
             Me.Width = width
             Me.Height = height
             Me.Scale = scale
@@ -30,7 +30,6 @@ Public Class FunctionVisualizer
     Private mFFTPlot As Bitmap
     Private mFFTPlotSettings As GraphSettings
 
-    Private Const ToRad As Single = Math.PI / 180
     Private Tau As Double = 2 * Math.PI
 
     Private evaluator As Evaluator
@@ -201,12 +200,8 @@ Public Class FunctionVisualizer
     End Sub
 
     Private Sub CreateLinearPlot()
-        Dim width As Integer = mLinearPlotSettings.Width
-        Dim height As Integer = mLinearPlotSettings.Height
-        Dim scale As Integer = mLinearPlotSettings.Scale
-
-        Dim w2 As Integer = width / 2
-        Dim h2 As Integer = height / 2
+        Dim w2 As Single = mLinearPlotSettings.Width / 2
+        Dim h2 As Single = mLinearPlotSettings.Height / 2
 
         Dim p1 As PointF
         Dim p2 As PointF
@@ -223,7 +218,7 @@ Public Class FunctionVisualizer
             g.Clear(Color.Black)
 
             g.ScaleTransform(1.0, -1.0)
-            g.TranslateTransform(width / 2, -height / 2)
+            g.TranslateTransform(mLinearPlotSettings.Width / 2, -mLinearPlotSettings.Height / 2)
 
             For x As Integer = -w2 To w2 Step mResolution
                 g.DrawLine(If(x = 0, Pens.LightGray, Pens.DimGray), x, h2, x, -h2)
@@ -232,27 +227,23 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            p1 = New PointF(-w2, scale * evaluator.Evaluate(-w2))
+            p1 = New PointF(-w2, mLinearPlotSettings.Scale * evaluator.Evaluate(-w2))
             For x As Double = -w2 To w2
-                t = x / width * graphLength
-                p2 = New PointF(x, scale * evaluator.Evaluate(t))
+                t = x / mLinearPlotSettings.Width * graphLength
+                p2 = New PointF(x, mLinearPlotSettings.Scale * evaluator.Evaluate(t))
 
                 g.DrawLine(LinearPlotSettings.Color, p1, p2)
                 p1 = p2
             Next
 
             ' Draw sample line
-            g.DrawLine(Pens.Red, CInt(mSamplePosition), -height, CInt(mSamplePosition), height)
+            g.DrawLine(Pens.Red, CInt(mSamplePosition), -mLinearPlotSettings.Height, CInt(mSamplePosition), mLinearPlotSettings.Height)
         End Using
     End Sub
 
     Private Sub CreateCircularPlot()
-        Dim width As Integer = mCircularPlotSettings.Width
-        Dim height As Integer = mCircularPlotSettings.Height
-        Dim scale As Integer = mCircularPlotSettings.Scale
-
-        Dim w2 As Integer = width / 2
-        Dim h2 As Integer = height / 2
+        Dim w2 As Single = mCircularPlotSettings.Width / 2
+        Dim h2 As Single = mCircularPlotSettings.Height / 2
 
         Dim p1 As PointF
         Dim p2 As PointF
@@ -264,7 +255,7 @@ Public Class FunctionVisualizer
         Dim sumX As Double = 0
         Dim sumY As Double = 0
 
-        Dim factor As Integer = 8
+        Dim factor As Double = 8
         Dim sampleLength As Double = factor * Tau
 
         If mCyclesPerSecond > 0 Then
@@ -282,7 +273,7 @@ Public Class FunctionVisualizer
             g.Clear(Color.Black)
 
             g.ScaleTransform(1.0, -1.0)
-            g.TranslateTransform(width / 2, -height / 2)
+            g.TranslateTransform(mCircularPlotSettings.Width / 2, -mCircularPlotSettings.Height / 2)
 
             For x As Integer = -w2 To w2 Step mResolution
                 g.DrawLine(If(x = 0, Pens.LightGray, Pens.DimGray), x, h2, x, -h2)
@@ -291,21 +282,19 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            'p1 = New PointF(scale * mFunction(0) * Math.Cos(0), ' Math.Cos(0) = 1
-            '                scale * mFunction(0) * Math.Sin(0)) ' Math.Sin(0) = 0
-            p1 = New PointF(scale * evaluator.Evaluate(0), 0)
+            p1 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(0), 0)
 
             For a = 0 To sampleLength Step 1 / mResolution
                 t = a * secPerCycle
 
-                p2 = New PointF(scale * evaluator.Evaluate(t) * Math.Cos(a),
-                                scale * evaluator.Evaluate(t) * Math.Sin(a))
+                p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
+                                mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Sin(a))
 
                 g.DrawLine(CircularPlotSettings.Color, p1, p2)
                 p1 = p2
 
-                sumX += p2.X / scale
-                sumY += p2.Y / scale
+                sumX += p2.X / mCircularPlotSettings.Scale
+                sumY += p2.Y / mCircularPlotSettings.Scale
             Next
 
             mCenterOfMass = Math.Sqrt(sumX ^ 2 + sumY ^ 2) / mResolution / factor
@@ -314,11 +303,11 @@ Public Class FunctionVisualizer
             If Not centersOfMass.Contains(p) Then centersOfMass.Add(p)
 
             ' Draw sample line
-            t = mSamplePosition / width * sampleLength
+            t = mSamplePosition / mCircularPlotSettings.Width * sampleLength
             a = (t / secPerCycle)
             p1 = New PointF(0, 0)
-            p2 = New PointF(scale * evaluator.Evaluate(t) * Math.Cos(a),
-                            scale * evaluator.Evaluate(t) * Math.Sin(a))
+            p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
+                            mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Sin(a))
             g.DrawLine(Pens.Red, p1, p2)
 
             ' Draw center of mass
@@ -330,12 +319,8 @@ Public Class FunctionVisualizer
     End Sub
 
     Private Sub CreateFFTPlot()
-        Dim width As Integer = mLinearPlotSettings.Width
-        Dim height As Integer = mLinearPlotSettings.Height
-        Dim scale As Integer = mLinearPlotSettings.Scale
-
-        Dim w2 As Integer = width / 2
-        Dim h2 As Integer = height / 2
+        Dim w2 As Single = mFFTPlotSettings.Width / 2
+        Dim h2 As Single = mFFTPlotSettings.Height / 2
 
         Dim p1 As PointF
         Dim p2 As PointF
@@ -349,21 +334,21 @@ Public Class FunctionVisualizer
             g.Clear(Color.Black)
 
             g.ScaleTransform(1.0, -1.0)
-            g.TranslateTransform(0, -height)
+            g.TranslateTransform(0, -mFFTPlotSettings.Height)
 
-            For x As Integer = 0 To width Step mResolution
-                g.DrawLine(If(x = 0, Pens.LightGray, Pens.DimGray), x, 0, x, height)
-                For y As Integer = 0 To height Step mResolution
-                    g.DrawLine(If(y = 0, Pens.LightGray, Pens.DimGray), 0, y, width, y)
+            For x As Integer = 0 To mFFTPlotSettings.Width Step mResolution
+                g.DrawLine(If(x = 0, Pens.LightGray, Pens.DimGray), x, 0, x, mFFTPlotSettings.Height)
+                For y As Integer = 0 To mFFTPlotSettings.Height Step mResolution
+                    g.DrawLine(If(y = 0, Pens.LightGray, Pens.DimGray), 0, y, mFFTPlotSettings.Width, y)
                 Next
             Next
             If centersOfMass.Count = 0 Then Exit Sub
 
             Dim ordered As IOrderedEnumerable(Of Tuple(Of Double, Double)) = centersOfMass.OrderBy(Function(com) com.Item1)
 
-            p1 = New PointF(ordered(0).Item1 * mResolution, ordered(0).Item2 * scale)
+            p1 = New PointF(ordered(0).Item1 * mResolution, ordered(0).Item2 * mFFTPlotSettings.Scale)
             For Each com In ordered
-                p2 = New PointF(com.Item1 * mResolution, com.Item2 * scale)
+                p2 = New PointF(com.Item1 * mResolution, com.Item2 * mFFTPlotSettings.Scale)
 
                 g.DrawLine(FFTPlotSettings.Color, p1, p2)
 
@@ -371,7 +356,7 @@ Public Class FunctionVisualizer
             Next
 
             ' Draw mCyclesPerSecond line
-            g.DrawLine(Pens.CadetBlue, CInt(mCyclesPerSecond * mResolution), 0, CInt(mCyclesPerSecond * mResolution), height)
+            g.DrawLine(Pens.CadetBlue, CSng(mCyclesPerSecond * mResolution), 0, CSng(mCyclesPerSecond * mResolution), mFFTPlotSettings.Height)
         End Using
     End Sub
 End Class
