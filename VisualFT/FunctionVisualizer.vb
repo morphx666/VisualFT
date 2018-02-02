@@ -54,6 +54,13 @@ Public Class FunctionVisualizer
         centersOfMass.Clear()
     End Sub
 
+    Public Sub New(formula As String, Optional cyclesPerSecond As Double = 3, Optional resolution As Double = 50)
+        Me.New()
+        Me.Formula = formula
+        mCyclesPerSecond = cyclesPerSecond
+        mResolution = resolution
+    End Sub
+
     Public Sub Setup(linearPlotSettings As GraphSettings, circularPlotSettings As GraphSettings, fftPlotSettings As GraphSettings)
         mLinearPlotSettings = linearPlotSettings
         mLinearPlot = New Bitmap(mLinearPlotSettings.Width + 1, mLinearPlotSettings.Height + 1)
@@ -63,13 +70,6 @@ Public Class FunctionVisualizer
 
         mFFTPlotSettings = fftPlotSettings
         mFFTPlot = New Bitmap(mFFTPlotSettings.Width + 1, mFFTPlotSettings.Height + 1)
-    End Sub
-
-    Public Sub New([function] As String, Optional cyclesPerSecond As Double = 3, Optional resolution As Double = 50)
-        Me.New()
-        [function] = [function]
-        mCyclesPerSecond = cyclesPerSecond
-        mResolution = resolution
     End Sub
 
     Public Property Formula As String
