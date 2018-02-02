@@ -150,7 +150,7 @@ Public Class FunctionVisualizer
         centersOfMass.Clear()
 
         Task.Run(Sub()
-                     For cps As Double = 0.0001 To mLinearPlotSettings.Width / mResolution Step 0.02
+                     For cps As Double = 0 To mLinearPlotSettings.Width / mResolution Step 0.02
                          mCyclesPerSecond = cps
 
                          CreatePlots()
@@ -225,9 +225,9 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            p1 = New PointF(-w2, scale * evaluator.Evaluate(0))
+            p1 = New PointF(-w2, scale * evaluator.Evaluate(-w2))
             For x As Double = -w2 To w2
-                t = (x + w2) / width * graphLength
+                t = x / width * graphLength
                 p2 = New PointF(x, scale * evaluator.Evaluate(t))
 
                 g.DrawLine(linearPlotPen, p1, p2)
@@ -252,13 +252,21 @@ Public Class FunctionVisualizer
 
         Dim t As Double
         Dim a As Double
-        Dim secPerCycle As Double = 1 / mCyclesPerSecond
+        Dim secPerCycle As Double
 
         Dim sumX As Double = 0
         Dim sumY As Double = 0
 
         Dim factor As Integer = 8
         Dim sampleLength As Double = factor * Tau
+
+        If mCyclesPerSecond > 0 Then
+            secPerCycle = 1 / mCyclesPerSecond
+        Else
+            ' Simulate infinity. We don't use Double.MaxValue as this would quickly
+            ' produce an actual Double.IsInfinity result breaking everything
+            secPerCycle = Evaluator.Infinity
+        End If
 
         Using g As Graphics = Graphics.FromImage(mCircularPlot)
             g.SmoothingMode = Drawing2D.SmoothingMode.None

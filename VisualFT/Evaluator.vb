@@ -1,6 +1,8 @@
 ﻿Imports NCalc
 
 Public Class Evaluator
+    Public Const Infinity As Double = 10 ^ 6
+
     Public Delegate Function CustomFunctionDel(name As String, args As FunctionArgs)
 
     Private mFormula As String
@@ -114,7 +116,16 @@ Public Class Evaluator
             Return 0
         Else
             mCustomParameters("x") = xValue
-            Return exp.Evaluate()
+            Try
+                Dim result As Double = exp.Evaluate()
+                If Double.IsInfinity(result) Then
+                    Return Infinity
+                Else
+                    Return result
+                End If
+            Catch ex As OverflowException
+                Return Infinity
+            End Try
         End If
     End Function
 End Class
