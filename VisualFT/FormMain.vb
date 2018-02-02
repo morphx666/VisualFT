@@ -2,6 +2,7 @@
     Private fcnVis As FunctionVisualizer
 
     Private animationMode As Boolean
+    Private formulaFont As New Font("Consolas", 16, FontStyle.Bold, GraphicsUnit.Pixel)
 
     Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
@@ -11,6 +12,20 @@
 
         Me.BackColor = Color.Black
 
+        fcnVis = New FunctionVisualizer()
+
+        fcnVis.Setup(New FunctionVisualizer.GraphSettings(800, 100, 20),
+                     New FunctionVisualizer.GraphSettings(800, 500, 120),
+                     New FunctionVisualizer.GraphSettings(800, 100, 20))
+
+        SetupEventsHandlers()
+
+        TextBoxFormula.Text = "1 + Cos(3 * x)"
+
+        CreatePlots()
+    End Sub
+
+    Private Sub SetupEventsHandlers()
         AddHandler Me.KeyDown, Sub(s1 As Object, e1 As KeyEventArgs)
                                    Select Case e1.KeyCode
                                        Case Keys.Up
@@ -36,34 +51,44 @@
                                        Case Keys.Enter
                                            animationMode = Not animationMode
                                            If animationMode Then
-                                               fcnVis.DoFFT(5)
+                                               fcnVis.DoFFT()
                                            Else
                                                fcnVis.StopFFT()
                                            End If
                                    End Select
                                End Sub
 
-        fcnVis = New FunctionVisualizer()
-        fcnVis.CreateBitmaps(New FunctionVisualizer.GraphSettings(800, 100, 20),
-                          New FunctionVisualizer.GraphSettings(800, 500, 120),
-                          New FunctionVisualizer.GraphSettings(800, 100, 20))
-
-
         AddHandler fcnVis.NewFrameAvailable, Sub(isLastFrame As Boolean)
                                                  Me.Invalidate()
                                                  If isLastFrame Then animationMode = False
                                              End Sub
 
-        fcnVis.Function = New FunctionVisualizer.FunctionProvider(Function(x As Double) As Double
-                                                                      Return 1 + Math.Cos(3 * x)
-                                                                  End Function)
+        AddHandler TextBoxFormula.TextChanged, Sub()
+                                                   fcnVis.Formula = TextBoxFormula.Text
+                                                   LabelFormula.Text = fcnVis.Formula
+                                                   CreatePlots()
+                                               End Sub
+        AddHandler TextBoxFormula.KeyDown, Sub(s1 As Object, s2 As KeyEventArgs)
+                                               If s2.KeyCode = Keys.Enter Then
+                                                   TextBoxFormula.Visible = False
+                                                   Me.Focus()
+                                               End If
+                                           End Sub
 
-        CreatePlots()
+        AddHandler LabelFormula.Click, Sub()
+                                           TextBoxFormula.Location = LabelFormula.Location
+                                           TextBoxFormula.Visible = True
+                                           TextBoxFormula.Focus()
+                                       End Sub
     End Sub
 
     Private Sub CreatePlots()
-        fcnVis.CreatePlots()
-        Me.Invalidate()
+        If animationMode Then Exit Sub
+
+        Task.Run(Sub()
+                     fcnVis.CreatePlots()
+                     Me.Invoke(New MethodInvoker(Sub() Me.Invalidate()))
+                 End Sub)
     End Sub
 
     Private Sub FormMain_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint

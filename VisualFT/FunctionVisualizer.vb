@@ -15,9 +15,7 @@ Public Class FunctionVisualizer
         End Sub
     End Structure
 
-    Public Delegate Function FunctionProvider(x As Double) As Double
-
-    Private mFunction As FunctionProvider
+    Private mFormula As String
     Private mCyclesPerSecond As Double
     Private mSamplePosition As Double
     Private mCenterOfMass As Double
@@ -33,6 +31,7 @@ Public Class FunctionVisualizer
     Private Const ToRad As Single = Math.PI / 180
     Private Tau As Double = 2 * Math.PI
 
+    Private evaluator As Evaluator
     Private animCancelTask As CancellationTokenSource
     Private centersOfMass As New List(Of Tuple(Of Double, Double))
 
@@ -45,17 +44,17 @@ Public Class FunctionVisualizer
     Public Event NewFrameAvailable(isLastFrame As Boolean)
 
     Public Sub New()
-        mFunction = New FunctionProvider(Function(x As Double) As Double
-                                             Return 1 + Math.Cos(3 * x)
-                                         End Function)
+        evaluator = New Evaluator()
+        evaluator.CustomParameters.Add("x", 0)
 
+        Formula = "1 + Cos(3 * x)"
         mCyclesPerSecond = 3
-        mSamplePosition = 14.7
+        mSamplePosition = 36.7
         mResolution = 50
         centersOfMass.Clear()
     End Sub
 
-    Public Sub CreateBitmaps(linearPlotSettings As GraphSettings, circularPlotSettings As GraphSettings, fftPlotSettings As GraphSettings)
+    Public Sub Setup(linearPlotSettings As GraphSettings, circularPlotSettings As GraphSettings, fftPlotSettings As GraphSettings)
         mLinearPlotSettings = linearPlotSettings
         mLinearPlot = New Bitmap(mLinearPlotSettings.Width + 1, mLinearPlotSettings.Height + 1)
 
@@ -66,19 +65,20 @@ Public Class FunctionVisualizer
         mFFTPlot = New Bitmap(mFFTPlotSettings.Width + 1, mFFTPlotSettings.Height + 1)
     End Sub
 
-    Public Sub New([function] As FunctionProvider, Optional cyclesPerSecond As Double = 3, Optional resolution As Double = 50)
+    Public Sub New([function] As String, Optional cyclesPerSecond As Double = 3, Optional resolution As Double = 50)
         Me.New()
-        mFunction = [function]
+        [function] = [function]
         mCyclesPerSecond = cyclesPerSecond
         mResolution = resolution
     End Sub
 
-    Public Property [Function] As FunctionProvider
+    Public Property Formula As String
         Get
-            Return mFunction
+            Return mFormula
         End Get
-        Set(value As FunctionProvider)
-            mFunction = value
+        Set(value As String)
+            mFormula = value
+            evaluator.Formula = mFormula
             centersOfMass.Clear()
         End Set
     End Property
@@ -143,14 +143,14 @@ Public Class FunctionVisualizer
         End Get
     End Property
 
-    Public Sub DoFFT(frequency As Double)
+    Public Sub DoFFT()
         animCancelTask = New CancellationTokenSource()
         Dim ct As CancellationToken = animCancelTask.Token
 
         centersOfMass.Clear()
 
         Task.Run(Sub()
-                     For cps As Double = 0.0001 To frequency * 2 Step 0.01
+                     For cps As Double = 0.0001 To mLinearPlotSettings.Width / mResolution Step 0.02
                          mCyclesPerSecond = cps
 
                          CreatePlots()
@@ -176,9 +176,20 @@ Public Class FunctionVisualizer
 
     Public Sub CreatePlots()
         SyncLock SyncObject
-            CreateLinearPlot()
-            CreateCircularPlot()
-            CreateFFTPlot()
+            Try
+                CreateLinearPlot()
+            Catch ex As Exception
+            End Try
+
+            Try
+                CreateCircularPlot()
+            Catch ex As Exception
+            End Try
+
+            Try
+                CreateFFTPlot()
+            Catch ex As Exception
+            End Try
         End SyncLock
     End Sub
 
@@ -214,10 +225,10 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            p1 = New PointF(-w2, scale * mFunction((mSamplePosition + w2) / width * graphLength))
+            p1 = New PointF(-w2, scale * evaluator.Evaluate(0))
             For x As Double = -w2 To w2
                 t = (x + w2) / width * graphLength
-                p2 = New PointF(x, scale * mFunction(t))
+                p2 = New PointF(x, scale * evaluator.Evaluate(t))
 
                 g.DrawLine(linearPlotPen, p1, p2)
                 p1 = p2
@@ -267,13 +278,13 @@ Public Class FunctionVisualizer
 
             'p1 = New PointF(scale * mFunction(0) * Math.Cos(0), ' Math.Cos(0) = 1
             '                scale * mFunction(0) * Math.Sin(0)) ' Math.Sin(0) = 0
-            p1 = New PointF(scale * mFunction(0), 0)
+            p1 = New PointF(scale * evaluator.Evaluate(0), 0)
 
             For a = 0 To sampleLength Step 1 / mResolution
                 t = a * secPerCycle
 
-                p2 = New PointF(scale * mFunction(t) * Math.Cos(a),
-                                scale * mFunction(t) * Math.Sin(a))
+                p2 = New PointF(scale * evaluator.Evaluate(t) * Math.Cos(a),
+                                scale * evaluator.Evaluate(t) * Math.Sin(a))
 
                 g.DrawLine(circularPlotPen, p1, p2)
                 p1 = p2
@@ -291,8 +302,8 @@ Public Class FunctionVisualizer
             t = mSamplePosition / width * sampleLength
             a = (t / secPerCycle)
             p1 = New PointF(0, 0)
-            p2 = New PointF(scale * mFunction(t) * Math.Cos(a),
-                            scale * mFunction(t) * Math.Sin(a))
+            p2 = New PointF(scale * evaluator.Evaluate(t) * Math.Cos(a),
+                            scale * evaluator.Evaluate(t) * Math.Sin(a))
             g.DrawLine(Pens.Red, p1, p2)
 
             ' Draw center of mass
