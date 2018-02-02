@@ -20,10 +20,6 @@ Public Class Evaluator
         End Set
     End Property
 
-    ''' <summary>
-    ''' Gets or sets the formula to be evaluated
-    ''' </summary>
-    ''' <returns><see cref="String"/></returns>
     Public Property Formula As String
         Get
             Return mFormula

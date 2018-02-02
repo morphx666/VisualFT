@@ -33,7 +33,7 @@ Partial Class FormMain
         Me.LabelFormula.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
         Me.LabelFormula.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelFormula.ForeColor = System.Drawing.Color.CadetBlue
+        Me.LabelFormula.ForeColor = System.Drawing.Color.DeepSkyBlue
         Me.LabelFormula.Location = New System.Drawing.Point(505, 9)
         Me.LabelFormula.Name = "LabelFormula"
         Me.LabelFormula.Padding = New System.Windows.Forms.Padding(0, 0, 0, 1)
@@ -49,7 +49,7 @@ Partial Class FormMain
         Me.TextBoxFormula.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
         Me.TextBoxFormula.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxFormula.ForeColor = System.Drawing.Color.CadetBlue
+        Me.TextBoxFormula.ForeColor = System.Drawing.Color.DeepSkyBlue
         Me.TextBoxFormula.Location = New System.Drawing.Point(505, 88)
         Me.TextBoxFormula.Name = "TextBoxFormula"
         Me.TextBoxFormula.Size = New System.Drawing.Size(312, 19)

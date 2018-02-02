@@ -163,7 +163,7 @@ Public Class FunctionVisualizer
 
                          RaiseEvent NewFrameAvailable(False)
 
-                         Thread.Sleep(5)
+                         Thread.Sleep(1)
 
                          If ct.IsCancellationRequested Then
                              animCancelTask.Dispose()
@@ -227,7 +227,7 @@ Public Class FunctionVisualizer
                 Next
             Next
 
-            p1 = New PointF(-w2, mLinearPlotSettings.Scale * evaluator.Evaluate(-w2))
+            p1 = New PointF(-w2, mLinearPlotSettings.Scale * evaluator.Evaluate(-w2 / mLinearPlotSettings.Width * graphLength))
             For x As Double = -w2 To w2
                 t = x / mLinearPlotSettings.Width * graphLength
                 p2 = New PointF(x, mLinearPlotSettings.Scale * evaluator.Evaluate(t))

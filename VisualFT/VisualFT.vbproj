@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evaluator.vb" />
-    <Compile Include="FFT.vb" />
     <Compile Include="FunctionVisualizer.vb" />
     <Compile Include="FormMain.vb">
       <SubType>Form</SubType>

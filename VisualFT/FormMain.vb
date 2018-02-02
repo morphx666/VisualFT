@@ -16,7 +16,7 @@
 
         fcnVis.Setup(New FunctionVisualizer.GraphSettings(800, 100, 20, New Pen(Color.Yellow, 2)),
                      New FunctionVisualizer.GraphSettings(800, 500, 120, New Pen(Color.Yellow, 2)),
-                     New FunctionVisualizer.GraphSettings(800, 100, 1 / 100, New Pen(Color.Violet, 2)))
+                     New FunctionVisualizer.GraphSettings(800, 100, 20, New Pen(Color.Violet, 2)))
 
         SetupEventsHandlers()
 
