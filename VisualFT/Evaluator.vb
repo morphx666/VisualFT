@@ -11,6 +11,7 @@ Public Class Evaluator
     Private mCustomFunction As CustomFunctionDel
 
     Private exp As Expression
+    Private rnd As New Random()
 
     Public Property CustomFunctionHandler As CustomFunctionDel
         Get
@@ -43,7 +44,7 @@ Public Class Evaluator
                                                      Case "Abs"
                                                          args.Result = Math.Abs(args.Parameters(0).Evaluate())
                                                      Case "Rnd"
-                                                         args.Result = (New Random()).NextDouble()
+                                                         args.Result = rnd.NextDouble() - 0.5
                                                  End Select
                                              End Sub
 
