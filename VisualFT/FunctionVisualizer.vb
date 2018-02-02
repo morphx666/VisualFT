@@ -7,11 +7,13 @@ Public Class FunctionVisualizer
         Public ReadOnly Property Width As Integer
         Public ReadOnly Property Height As Integer
         Public ReadOnly Property Scale As Integer
+        Public ReadOnly Property Color As Pen
 
-        Public Sub New(width As Integer, height As Integer, scale As Integer)
+        Public Sub New(width As Integer, height As Integer, scale As Integer, color As Pen)
             Me.Width = width
             Me.Height = height
             Me.Scale = scale
+            Me.Color = color
         End Sub
     End Structure
 
@@ -34,10 +36,6 @@ Public Class FunctionVisualizer
     Private evaluator As Evaluator
     Private animCancelTask As CancellationTokenSource
     Private centersOfMass As New List(Of Tuple(Of Double, Double))
-
-    Private linearPlotPen As New Pen(Color.Yellow, 2)
-    Private circularPlotPen As New Pen(Color.Yellow, 2)
-    Private fftPlotPen As New Pen(Color.Violet, 2)
 
     Public SyncObject As New Object()
 
@@ -143,6 +141,15 @@ Public Class FunctionVisualizer
         End Get
     End Property
 
+    Public Property Resolution As Double
+        Get
+            Return mResolution
+        End Get
+        Set(value As Double)
+            mResolution = value
+        End Set
+    End Property
+
     Public Sub DoFFT()
         animCancelTask = New CancellationTokenSource()
         Dim ct As CancellationToken = animCancelTask.Token
@@ -230,7 +237,7 @@ Public Class FunctionVisualizer
                 t = x / width * graphLength
                 p2 = New PointF(x, scale * evaluator.Evaluate(t))
 
-                g.DrawLine(linearPlotPen, p1, p2)
+                g.DrawLine(LinearPlotSettings.Color, p1, p2)
                 p1 = p2
             Next
 
@@ -294,7 +301,7 @@ Public Class FunctionVisualizer
                 p2 = New PointF(scale * evaluator.Evaluate(t) * Math.Cos(a),
                                 scale * evaluator.Evaluate(t) * Math.Sin(a))
 
-                g.DrawLine(circularPlotPen, p1, p2)
+                g.DrawLine(CircularPlotSettings.Color, p1, p2)
                 p1 = p2
 
                 sumX += p2.X / scale
@@ -315,7 +322,7 @@ Public Class FunctionVisualizer
             g.DrawLine(Pens.Red, p1, p2)
 
             ' Draw center of mass
-            Using sb As New SolidBrush(fftPlotPen.Color)
+            Using sb As New SolidBrush(FFTPlotSettings.Color.Color)
                 g.FillEllipse(sb, CSng(sumX / factor),
                                   CSng(sumY / factor), 8, 8)
             End Using
@@ -358,13 +365,13 @@ Public Class FunctionVisualizer
             For Each com In ordered
                 p2 = New PointF(com.Item1 * mResolution, com.Item2 * scale)
 
-                g.DrawLine(fftPlotPen, p1, p2)
+                g.DrawLine(FFTPlotSettings.Color, p1, p2)
 
                 p1 = p2
             Next
 
             ' Draw mCyclesPerSecond line
-            g.DrawLine(Pens.Red, CInt(mCyclesPerSecond * mResolution), 0, CInt(mCyclesPerSecond * mResolution), height)
+            g.DrawLine(Pens.CadetBlue, CInt(mCyclesPerSecond * mResolution), 0, CInt(mCyclesPerSecond * mResolution), height)
         End Using
     End Sub
 End Class

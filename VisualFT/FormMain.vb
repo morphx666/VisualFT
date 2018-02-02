@@ -14,9 +14,9 @@
 
         fcnVis = New FunctionVisualizer()
 
-        fcnVis.Setup(New FunctionVisualizer.GraphSettings(800, 100, 20),
-                     New FunctionVisualizer.GraphSettings(800, 500, 120),
-                     New FunctionVisualizer.GraphSettings(800, 100, 20))
+        fcnVis.Setup(New FunctionVisualizer.GraphSettings(800, 100, 20, New Pen(Color.Yellow, 2)),
+                     New FunctionVisualizer.GraphSettings(800, 500, 120, New Pen(Color.Yellow, 2)),
+                     New FunctionVisualizer.GraphSettings(800, 100, 20, New Pen(Color.Violet, 2)))
 
         SetupEventsHandlers()
 
@@ -100,8 +100,11 @@
             g.DrawImageUnscaled(fcnVis.CircularPlot, 10, 60 + fcnVis.LinearPlotSettings.Height + fcnVis.FFTPlotSettings.Height + 10 * 2)
         End SyncLock
 
-        g.DrawString($"Cycles/s: {fcnVis.CyclesPerSecond:N2}", Me.Font, Brushes.LightBlue, 5, 5)
-        g.DrawString($"Position: {fcnVis.SamplePosition:N2}", Me.Font, Brushes.IndianRed, 5, 20)
-        g.DrawString($"Center Of Mass: {fcnVis.CenterOfMass:N2}", Me.Font, Brushes.IndianRed, 5, 35)
+        g.DrawString($"Cycles/s: {fcnVis.CyclesPerSecond:N2}", Me.Font, Brushes.CadetBlue, 5, 5)
+        g.DrawString($"Position: {fcnVis.SamplePosition:N2}", Me.Font, Brushes.Red, 5, 20)
+
+        Using sb As New SolidBrush(fcnVis.FFTPlotSettings.Color.Color)
+            g.DrawString($"Center Of Mass: {fcnVis.CenterOfMass:N2}", Me.Font, sb, 5, 35)
+        End Using
     End Sub
 End Class
