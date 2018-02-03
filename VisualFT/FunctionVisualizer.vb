@@ -36,6 +36,9 @@ Public Class FunctionVisualizer
     Private animCancelTask As CancellationTokenSource
     Private centersOfMass As New List(Of Tuple(Of Double, Double))
 
+    ' FIXME: Need to define what "factor" is...
+    Private Const factor As Double = 8
+
     Public SyncObject As New Object()
 
     Public Event NewFrameAvailable(isLastFrame As Boolean)
@@ -237,7 +240,8 @@ Public Class FunctionVisualizer
             Next
 
             ' Draw sample line
-            g.DrawLine(Pens.Red, CInt(mSamplePosition), -mLinearPlotSettings.Height, CInt(mSamplePosition), mLinearPlotSettings.Height)
+            g.DrawLine(Pens.Red, CInt(mSamplePosition * factor), -mLinearPlotSettings.Height,
+                                 CInt(mSamplePosition * factor), mLinearPlotSettings.Height)
         End Using
     End Sub
 
@@ -255,7 +259,6 @@ Public Class FunctionVisualizer
         Dim sumX As Double = 0
         Dim sumY As Double = 0
 
-        Dim factor As Double = 8
         Dim sampleLength As Double = factor * Tau
 
         If mCyclesPerSecond > 0 Then

@@ -20,7 +20,10 @@
 
         SetupEventsHandlers()
 
-        TextBoxFormula.Text = "1 + Cos(3 * x)"
+        'TextBoxFormula.Text = "1 + Cos(3 * x)"
+        TextBoxFormula.Text = "2 * Cos(x)"
+        fcnVis.SamplePosition = 0
+        fcnVis.CyclesPerSecond = 1
 
         CreatePlots()
     End Sub
@@ -42,10 +45,10 @@
                                            CreatePlots()
 
                                        Case Keys.Right
-                                           fcnVis.SamplePosition += 0.5
+                                           fcnVis.SamplePosition += 0.1
                                            CreatePlots()
                                        Case Keys.Left
-                                           fcnVis.SamplePosition -= 0.5
+                                           fcnVis.SamplePosition -= 0.1
                                            CreatePlots()
 
                                        Case Keys.Enter
