@@ -20,35 +20,31 @@
 
         SetupEventsHandlers()
 
-        'TextBoxFormula.Text = "1 + Cos(3 * x)"
-        TextBoxFormula.Text = "2 * Cos(x)"
-        fcnVis.SamplePosition = 0
-        fcnVis.CyclesPerSecond = 1
+        TextBoxFormula.Text = "1 + Cos(3 * x)"
+        'TextBoxFormula.Text = "2 * Cos(x)"
+        'fcnVis.SamplePosition = 0
+        'fcnVis.CyclesPerSecond = 1
 
         CreatePlots()
     End Sub
 
     Private Sub SetupEventsHandlers()
         AddHandler Me.KeyDown, Sub(s1 As Object, e1 As KeyEventArgs)
+                                   Dim k As Double = If(e1.Shift, 0.1, 0.01)
+
                                    Select Case e1.KeyCode
                                        Case Keys.Up
-                                           fcnVis.CyclesPerSecond += 0.01
+                                           fcnVis.CyclesPerSecond += k
                                            CreatePlots()
                                        Case Keys.Down
-                                           fcnVis.CyclesPerSecond -= 0.01
-                                           CreatePlots()
-                                       Case Keys.PageUp
-                                           fcnVis.CyclesPerSecond += 0.1
-                                           CreatePlots()
-                                       Case Keys.PageDown
-                                           fcnVis.CyclesPerSecond -= 0.1
+                                           fcnVis.CyclesPerSecond -= k
                                            CreatePlots()
 
                                        Case Keys.Right
-                                           fcnVis.SamplePosition += 0.1
+                                           fcnVis.SamplePosition += k
                                            CreatePlots()
                                        Case Keys.Left
-                                           fcnVis.SamplePosition -= 0.1
+                                           fcnVis.SamplePosition -= k
                                            CreatePlots()
 
                                        Case Keys.Enter
