@@ -76,6 +76,7 @@
 
         AddHandler LabelFormula.Click, Sub()
                                            TextBoxFormula.Location = LabelFormula.Location
+                                           TextBoxFormula.Width = LabelFormula.Width
                                            TextBoxFormula.Visible = True
                                            TextBoxFormula.Focus()
                                        End Sub

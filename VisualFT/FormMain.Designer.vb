@@ -35,10 +35,10 @@ Partial Class FormMain
         Me.LabelFormula.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelFormula.ForeColor = System.Drawing.Color.DeepSkyBlue
-        Me.LabelFormula.Location = New System.Drawing.Point(505, 9)
+        Me.LabelFormula.Location = New System.Drawing.Point(160, 9)
         Me.LabelFormula.Name = "LabelFormula"
         Me.LabelFormula.Padding = New System.Windows.Forms.Padding(0, 0, 0, 1)
-        Me.LabelFormula.Size = New System.Drawing.Size(312, 22)
+        Me.LabelFormula.Size = New System.Drawing.Size(657, 22)
         Me.LabelFormula.TabIndex = 0
         Me.LabelFormula.Text = "Label1"
         Me.LabelFormula.TextAlign = System.Drawing.ContentAlignment.MiddleRight
