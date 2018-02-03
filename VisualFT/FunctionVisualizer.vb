@@ -291,7 +291,7 @@ Public Class FunctionVisualizer
                 t = a * secPerCycle
 
                 p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
-                                mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Sin(a))
+                                mCircularPlotSettings.Scale * evaluator.Evaluate(t) * -Math.Sin(a))
 
                 g.DrawLine(CircularPlotSettings.Color, p1, p2)
                 p1 = p2
@@ -310,7 +310,7 @@ Public Class FunctionVisualizer
             a = (t / secPerCycle)
             p1 = New PointF(0, 0)
             p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
-                            mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Sin(a))
+                            mCircularPlotSettings.Scale * evaluator.Evaluate(t) * -Math.Sin(a))
             g.DrawLine(Pens.Red, p1, p2)
 
             ' Draw center of mass
