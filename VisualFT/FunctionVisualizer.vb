@@ -49,7 +49,7 @@ Public Class FunctionVisualizer
 
         Formula = "1 + Cos(3 * x)"
         mCyclesPerSecond = 3
-        mSamplePosition = 36.7
+        mSamplePosition = 2.9
         mResolution = 50
         centersOfMass.Clear()
     End Sub
@@ -259,7 +259,7 @@ Public Class FunctionVisualizer
         Dim sumX As Double = 0
         Dim sumY As Double = 0
 
-        Dim sampleLength As Double = factor * Tau
+        Dim sampleLength As Double = factor * Tau * Math.Sqrt(mCyclesPerSecond)  ' Increase the sampling length as the frequency increases
 
         If mCyclesPerSecond > 0 Then
             secPerCycle = 1 / mCyclesPerSecond
@@ -287,7 +287,7 @@ Public Class FunctionVisualizer
 
             p1 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(0), 0)
 
-            For a = 0 To sampleLength Step 1 / mResolution
+            For a = 0 To sampleLength Step 1 / (mResolution - mCyclesPerSecond * 2) ' This "Step" formula increases performance, while progressively decreasing the quality of the plot
                 t = a * secPerCycle
 
                 p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
