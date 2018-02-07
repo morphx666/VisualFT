@@ -30,7 +30,10 @@
 
     Private Sub SetupEventsHandlers()
         AddHandler Me.KeyDown, Sub(s1 As Object, e1 As KeyEventArgs)
-                                   Dim k As Double = If(e1.Shift, 0.1, 0.01)
+                                   ' Normal         = 0.01
+                                   ' SHIFT          = 0.1
+                                   ' SHIFT + CTRL   = 0.2
+                                   Dim k As Double = If(e1.Shift, If(e1.Control, 0.2, 0.1), 0.01)
 
                                    Select Case e1.KeyCode
                                        Case Keys.Up

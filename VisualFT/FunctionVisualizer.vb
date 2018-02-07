@@ -35,6 +35,7 @@ Public Class FunctionVisualizer
     Private evaluator As Evaluator
     Private animCancelTask As CancellationTokenSource
     Private centersOfMass As New List(Of Tuple(Of Double, Double))
+    Private isRunning As Boolean
 
     ' FIXME: Need to define what "factor" is...
     Private Const factor As Double = 8
@@ -168,12 +169,11 @@ Public Class FunctionVisualizer
 
                          Thread.Sleep(1)
 
-                         If ct.IsCancellationRequested Then
-                             animCancelTask.Dispose()
-                             animCancelTask = Nothing
-                             Exit For
-                         End If
+                         If ct.IsCancellationRequested Then Exit For
                      Next
+
+                     animCancelTask.Dispose()
+                     animCancelTask = Nothing
 
                      RaiseEvent NewFrameAvailable(True)
                  End Sub, ct)
@@ -265,7 +265,7 @@ Public Class FunctionVisualizer
             secPerCycle = 1 / mCyclesPerSecond
         Else
             ' Simulate infinity. We don't use Double.MaxValue as this would quickly
-            ' produce an actual Double.IsInfinity result breaking everything
+            ' produce an actual Double.PositiveInfinity or Double.NegativeInfinity result breaking everything
             secPerCycle = Evaluator.Infinity
         End If
 
