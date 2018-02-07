@@ -306,7 +306,7 @@ Public Class FunctionVisualizer
             If Not centersOfMass.Contains(p) Then centersOfMass.Add(p)
 
             ' Draw sample line
-            t = mSamplePosition / mCircularPlotSettings.Width * sampleLength
+            t = mSamplePosition / mLinearPlotSettings.Width * (2 * factor * Tau)
             a = (t / secPerCycle)
             p1 = New PointF(0, 0)
             p2 = New PointF(mCircularPlotSettings.Scale * evaluator.Evaluate(t) * Math.Cos(a),
