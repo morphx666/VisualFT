@@ -153,7 +153,7 @@ Public Class FunctionVisualizer
         End Set
     End Property
 
-    Public Sub DoFFT()
+    Public Sub DoFourierTransform()
         animCancelTask = New CancellationTokenSource()
         Dim ct As CancellationToken = animCancelTask.Token
 
@@ -179,7 +179,7 @@ Public Class FunctionVisualizer
                  End Sub, ct)
     End Sub
 
-    Public Sub StopFFT()
+    Public Sub StopFourierTransform()
         animCancelTask?.Cancel()
     End Sub
 

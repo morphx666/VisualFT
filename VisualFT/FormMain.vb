@@ -55,7 +55,7 @@
                                            If animationMode Then
                                                fcnVis.DoFFT()
                                            Else
-                                               fcnVis.StopFFT()
+                                               fcnVis.StopFourierTransform()
                                            End If
                                    End Select
                                End Sub
