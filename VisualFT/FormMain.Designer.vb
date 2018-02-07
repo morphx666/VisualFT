@@ -35,10 +35,10 @@ Partial Class FormMain
         Me.LabelFormula.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelFormula.ForeColor = System.Drawing.Color.DeepSkyBlue
-        Me.LabelFormula.Location = New System.Drawing.Point(160, 9)
+        Me.LabelFormula.Location = New System.Drawing.Point(161, 9)
         Me.LabelFormula.Name = "LabelFormula"
         Me.LabelFormula.Padding = New System.Windows.Forms.Padding(0, 0, 0, 1)
-        Me.LabelFormula.Size = New System.Drawing.Size(657, 22)
+        Me.LabelFormula.Size = New System.Drawing.Size(650, 22)
         Me.LabelFormula.TabIndex = 0
         Me.LabelFormula.Text = "Label1"
         Me.LabelFormula.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -51,7 +51,7 @@ Partial Class FormMain
         Me.TextBoxFormula.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxFormula.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxFormula.ForeColor = System.Drawing.Color.DeepSkyBlue
-        Me.TextBoxFormula.Location = New System.Drawing.Point(505, 88)
+        Me.TextBoxFormula.Location = New System.Drawing.Point(500, 88)
         Me.TextBoxFormula.Name = "TextBoxFormula"
         Me.TextBoxFormula.Size = New System.Drawing.Size(312, 19)
         Me.TextBoxFormula.TabIndex = 1
@@ -62,7 +62,7 @@ Partial Class FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 18.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(829, 806)
+        Me.ClientSize = New System.Drawing.Size(824, 806)
         Me.Controls.Add(Me.TextBoxFormula)
         Me.Controls.Add(Me.LabelFormula)
         Me.Font = New System.Drawing.Font("Trebuchet MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
