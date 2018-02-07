@@ -211,7 +211,6 @@ Public Class FunctionVisualizer
 
         Dim t As Double
         Dim secPerCycle As Double = 1 / mCyclesPerSecond
-
         Dim graphLength As Double = 2 * Tau
 
         Using g As Graphics = Graphics.FromImage(mLinearPlot)

@@ -53,7 +53,7 @@
                                        Case Keys.Enter
                                            animationMode = Not animationMode
                                            If animationMode Then
-                                               fcnVis.DoFFT()
+                                               fcnVis.DoFourierTransform()
                                            Else
                                                fcnVis.StopFourierTransform()
                                            End If
