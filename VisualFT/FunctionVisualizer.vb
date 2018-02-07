@@ -186,7 +186,7 @@ Public Class FunctionVisualizer
     Public Sub CreatePlots()
         SyncLock SyncObject
             Try
-                CreateLinearPlot()
+                If animCancelTask Is Nothing Then CreateLinearPlot()
             Catch ex As Exception
             End Try
 
